@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <form id="login-form">
+            <label for="usuario">Usuário:</label>
+            <input type="text" id="usuario" name="usuario" required>
+
+            <label for="password">Senha:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Entrar</button>
+        </form>
+
+        <!-- Exibição de mensagens de erro -->
+        <div id="error-message" style="color: red; display: none;">Usuário/Senha inválidos</div>
+
+        <!-- Link estilizado como botão -->
+        <a href="CadastroUsuario.html" class="botao-link">Cadastrar Usuário</a>
+    </div>
+
+    <script>
+        document.getElementById("login-form").addEventListener("submit", function(event) {
+            event.preventDefault();  // Impede o envio padrão do formulário
+
+            const usuario = document.getElementById("usuario").value;
+            const password = document.getElementById("password").value;
+
+            fetch('/login', {
+                method: 'POST',
+                body: new URLSearchParams({
+                    'usuario': usuario,
+                    'password': password
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/App.html'; // Redireciona para a página principal após login bem-sucedido
+                } else {
+                    document.getElementById("error-message").style.display = "block"; // Exibe a mensagem de erro
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Ocorreu um erro ao tentar realizar o login');
+            });
+        });
+    </script>
+</body>
+</html>
